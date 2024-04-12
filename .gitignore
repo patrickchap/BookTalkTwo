@@ -27,3 +27,7 @@ tmp/
 
 # Project build
 main
+
+#node modules
+node_modules
+```
