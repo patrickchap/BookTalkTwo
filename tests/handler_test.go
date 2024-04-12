@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"BookTalkTwo/internal/server"
+	"BookTalkTwo/internal/api/server"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"net/http"

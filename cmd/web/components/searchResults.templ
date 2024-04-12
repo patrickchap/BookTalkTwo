@@ -1,0 +1,37 @@
+package components
+
+import (
+	"fmt"
+	"BookTalkTwo/models"
+)
+
+templ SearchResults(volumes []models.Volume) {
+	<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+		<tr>
+			<th scope="col" class="px-6 py-3"></th>
+			<th scope="col" class="px-6 py-3">
+				Title	
+			</th>
+			<th scope="col" class="px-6 py-3">
+				Author	
+			</th>
+			for _, volume := range volumes {
+				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<td class="px-6 py-4">
+						<a href={ templ.URL(fmt.Sprintf("/books/%s", volume.ID)) }>
+							<img src={ volume.Thumbnail } alt="Book cover" class="h-10 w-10 rounded-lg"/>
+						</a>
+					</td>
+					<td class="px-6 py-4">
+						<a href={ templ.URL(fmt.Sprintf("/books/%s", volume.ID)) }>
+							<div class="text-sm text-gray-900 dark:text-white">{ volume.Title }</div>
+						</a>
+					</td>
+					<td class="px-6 py-4">
+						<div class="text-sm text-gray-900 dark:text-white">{ volume.Author }</div>
+					</td>
+				</tr>
+			}
+		</tr>
+	</thead>
+}

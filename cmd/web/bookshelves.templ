@@ -1,0 +1,21 @@
+package web
+
+import (
+	"fmt"
+	"BookTalkTwo/models"
+	"BookTalkTwo/cmd/web/layouts"
+)
+
+templ Bookshelves(bookshelves []models.Bookshelf) {
+	@layouts.AuthBase("bookshelves") {
+		<h1>Bookshelves</h1>
+		for i, shelf := range bookshelves {
+			<div class="p-10">
+				<h1 class="text-white">{ shelf.Title } </h1>
+				<div id={ fmt.Sprintf("bookshelf-container-%d", i) } hx-get={ fmt.Sprintf("/bookshelves/%d?limit=4", shelf.ID) } hx-trigger="load" hx-target={ fmt.Sprintf("#bookshelf-container-%d", i) } hx-swap="outerHTML">
+					<h1>Loading...</h1>
+				</div>
+			</div>
+		}
+	}
+}

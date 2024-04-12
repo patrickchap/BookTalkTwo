@@ -1,0 +1,42 @@
+package web
+
+import (
+	"fmt"
+	"BookTalkTwo/models"
+	"BookTalkTwo/cmd/web/layouts"
+	"BookTalkTwo/cmd/web/components"
+)
+
+templ Volume(volume models.Volume) {
+	@layouts.AuthBase("volume") {
+		<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 gap-6 p-8">
+			<!-- Left Column -->
+			<div>
+				<a href={ templ.URL(fmt.Sprintf("/books/view/%s", volume.ID)) }>
+					<img src={ volume.Thumbnail } alt="Book Thumbnail" class="rounded-md mb-4"/>
+				</a>
+			</div>
+			<!-- Right Column -->
+			<div class="col-span-1 sm:col-span-1 md:col-span-3">
+				<div>
+					<h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{ volume.Title }</h1>
+					<p class="text-sm text-gray-600 mb-4">by { volume.Author }</p>
+					<div class="text-gray-900 dark:text-white mb-4">
+						@templ.Raw(volume.Description)
+					</div>
+					<h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Categories:</h2>
+					<ul class="list-disc pl-4 mb-4">
+						for _, cat := range volume.Categories {
+							<li class="text-gray-900 dark:text-white">{ cat }</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="mt-8">
+			<div class="mt-4">
+				@components.BookComments(volume.ID, volume.Comments)
+			</div>
+		</div>
+	}
+}

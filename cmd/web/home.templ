@@ -1,0 +1,70 @@
+package web
+
+import "BookTalkTwo/cmd/web/layouts"
+
+templ Logout() {
+	<script>
+        function logout() {
+            fetch('/logout', {
+                method: 'GET',
+                credentials: 'same-origin' 
+            })
+            .then(response => {
+                if (response.ok) {
+					window.location.href = '/';
+                } else {
+                    console.error('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+	<div>
+		<button onclick="logout(this)">logout</button>
+	</div>
+}
+
+templ Home(isLoggedIn bool) {
+	if isLoggedIn {
+		@layouts.AuthBase("browse") {
+			<div>Welcome back!</div>
+			@Logout()
+		}
+	} else {
+		@Base() {
+			<div class="bg-gray-100 flex justify-center items-center h-screen" id="home">
+				<div class="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden md:max-w-xl">
+					<div class="md:flex">
+						<div class="w-full px-4 py-6">
+							<h2 class="text-xl font-semibold text-gray-800 mb-2">Sign in to Your Account</h2>
+							<p class="text-gray-600">Sign in via Google:</p>
+							<div class="mt-4">
+								<!-- Google Sign-In button -->
+								<div>
+									<script src="https://accounts.google.com/gsi/client" async></script>
+									<div
+										id="g_id_onload"
+										data-client_id="578903625366-l7dl2f7obbrrq0rrdh1qj18pnq02oc1o.apps.googleusercontent.com"
+										data-login_uri="http://localhost:8080/login"
+										data-auto_prompt="false"
+									></div>
+									<div
+										class="g_id_signin"
+										data-type="standard"
+										data-size="large"
+										data-theme="outline"
+										data-text="sign_in_with"
+										data-shape="rectangular"
+										data-logo_alignment="left"
+									></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
+}

@@ -1,50 +1,42 @@
 package database
 
 import (
+	db "BookTalkTwo/db/sqlc"
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
-	"time"
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Service interface {
-	Health() map[string]string
+type Service struct {
+	store db.Store
 }
 
 type service struct {
-	db *sql.DB
+	store db.Store
 }
 
 var (
 	dburl = os.Getenv("DB_URL")
+	ddl   string
 )
 
 func New() Service {
-	db, err := sql.Open("sqlite3", dburl)
+	ctx := context.Background()
+	sqlDb, err := sql.Open("sqlite3", dburl)
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
 		log.Fatal(err)
 	}
-	s := &service{db: db}
+	if _, err := sqlDb.ExecContext(ctx, ddl); err != nil {
+		log.Fatal(err)
+	}
+
+	store := db.NewStore(sqlDb)
+	s := Service{store: store}
 	return s
-}
-
-func (s *service) Health() map[string]string {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-
-	err := s.db.PingContext(ctx)
-	if err != nil {
-		log.Fatalf(fmt.Sprintf("db down: %v", err))
-	}
-
-	return map[string]string{
-		"message": "It's healthy",
-	}
 }

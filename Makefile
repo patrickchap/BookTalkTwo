@@ -6,11 +6,12 @@ all: build
 build:
 	@echo "Building..."
 	@templ generate
-	@go build -o main cmd/api/main.go
+	@npx tailwindcss -i ./input.css -o ./static/css/output.css
+	@go build -o main cmd/main.go
 
 # Run the application
 run:
-	@go run cmd/api/main.go
+	@go run cmd/main.go
 
 # Test the application
 test:
@@ -39,4 +40,10 @@ watch:
 	    fi; \
 	fi
 
-.PHONY: all build run test clean
+tailwind:
+	npx tailwindcss -i ./input.css -o ./static/css/output.css 
+
+sqlc:
+	sqlc generate
+
+.PHONY: all build run test clean sqlc tailwind

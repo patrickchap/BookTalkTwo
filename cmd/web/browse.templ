@@ -1,0 +1,64 @@
+package web
+
+import "BookTalkTwo/cmd/web/layouts"
+
+templ Search() {
+	<form class="flex items-center max-w-sm mx-auto pt-20">
+		<label for="simple-search" class="sr-only">Search</label>
+		<div class="relative w-full">
+			<input
+				type="search"
+				name="search"
+				id="simple-search"
+				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				placeholder="Search books"
+				required
+				hx-post="/search"
+				hx-trigger="input changed delay:500ms, search"
+				hx-target="#search-results"
+				hx-indicator=".htmx-indicator"
+			/>
+		</div>
+	</form>
+	<style>
+	</style>
+	<table class="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="search-results"></table>
+}
+
+templ SearchTab() {
+	<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+		<ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" role="tablist">
+			<li class="me-2" role="presentation">
+				<button hx-get="/browse/search" class="inline-block p-4 border-b-2 rounded-t-lg text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Search</button>
+			</li>
+			<li class="me-2" role="presentation">
+				<button hx-get="/browse/categories" class="inline-block p-4 border-b-2 rounded-t-lg dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Categories</button>
+			</li>
+		</ul>
+	</div>
+	<div id="tab-content" role="tabpanel" class="tab-content">
+		@Search()
+	</div>
+}
+
+templ CategoriesTab() {
+	<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+		<ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" role="tablist">
+			<li class="me-2" role="presentation">
+				<button hx-get="/browse/search" class="inline-block p-4 border-b-2 rounded-t-lg dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Search</button>
+			</li>
+			<li class="me-2" role="presentation">
+				<button hx-get="/browse/categories" class="inline-block p-4 border-b-2 rounded-t-lg text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Categoreis</button>
+			</li>
+		</ul>
+	</div>
+	<div id="tab-content" role="tabpanel" class="tab-content">
+		<h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Categories</h1>
+	</div>
+}
+
+templ Browse() {
+	@layouts.AuthBase("browse") {
+		<div id="tabs" hx-get="/browse/search" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
+	}
+}

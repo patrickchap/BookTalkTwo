@@ -1,6 +1,7 @@
 package server
 
 import (
+	db "BookTalkTwo/db/sqlc"
 	"fmt"
 	"net/http"
 	"os"
@@ -8,22 +9,18 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
-
-	"BookTalkTwo/internal/database"
 )
 
 type Server struct {
-	port int
-
-	db database.Service
+	port  int
+	store db.Store
 }
 
-func NewServer() *http.Server {
+func NewServer(store db.Store) *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
-		port: port,
-
-		db: database.New(),
+		port:  port,
+		store: store,
 	}
 
 	// Declare Server config
