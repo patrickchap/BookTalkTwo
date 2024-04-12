@@ -10,7 +10,10 @@ import "context"
 import "io"
 import "bytes"
 
-import "BookTalkTwo/cmd/web/layouts"
+import (
+	"BookTalkTwo/cmd/web/layouts"
+	"os"
+)
 
 func Logout() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -124,11 +127,11 @@ func Home(isLoggedIn bool) templ.Component {
 					templ_7745c5c3_Buffer = templ.GetBuffer()
 					defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-gray-100 flex justify-center items-center h-screen\" id=\"home\"><div class=\"max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden md:max-w-xl\"><div class=\"md:flex\"><div class=\"w-full px-4 py-6\"><h2 class=\"text-xl font-semibold text-gray-800 mb-2\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-gray-900 flex justify-center items-center h-screen\" id=\"home\"><div class=\"bg-white max-w-md mx-auto rounded-lg shadow-lg overflow-hidden md:max-w-xl\"><div class=\"md:flex\"><div class=\"w-full px-4 py-6\"><h2 class=\"text-xl font-semibold text-gray-800 mb-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Var8 := `Sign in to Your Account`
+				templ_7745c5c3_Var8 := `Sign in to Book Talk`
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -160,7 +163,15 @@ func Home(isLoggedIn bool) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><div id=\"g_id_onload\" data-client_id=\"578903625366-l7dl2f7obbrrq0rrdh1qj18pnq02oc1o.apps.googleusercontent.com\" data-login_uri=\"http://localhost:8080/login\" data-auto_prompt=\"false\"></div><div class=\"g_id_signin\" data-type=\"standard\" data-size=\"large\" data-theme=\"outline\" data-text=\"sign_in_with\" data-shape=\"rectangular\" data-logo_alignment=\"left\"></div></div></div></div></div></div></div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><div id=\"g_id_onload\" data-client_id=\"578903625366-l7dl2f7obbrrq0rrdh1qj18pnq02oc1o.apps.googleusercontent.com\" data-login_uri=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(os.Getenv("OAUTH_LOGIN_URL")))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-auto_prompt=\"false\"></div><div class=\"g_id_signin\" data-type=\"standard\" data-size=\"large\" data-theme=\"outline\" data-text=\"sign_in_with\" data-shape=\"rectangular\" data-logo_alignment=\"left\"></div></div></div></div></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
